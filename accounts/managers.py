@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 class UserManager(BaseUserManager):
     def create_user(self, national_code, email, phone_num, full_name, father_name, date_of_birth, address, work_address,
-                    password=None, user_image=None):
+                    password=None, profile_image=None):
         if not national_code:
             raise ValueError("MyUser must have an National Code Number")
         if not email:
@@ -23,7 +23,7 @@ class UserManager(BaseUserManager):
             date_of_birth=date_of_birth,
             address=address,
             work_address=work_address,
-            user_image=user_image
+            profile_image=profile_image
         )
         user.set_password(password)
         user.save(using=self._db)
