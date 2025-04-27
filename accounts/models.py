@@ -18,6 +18,7 @@ class MyUser(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     profile_image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     objects = UserManager()
     USERNAME_FIELD = 'national_code'
