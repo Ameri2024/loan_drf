@@ -33,7 +33,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         fields = [
             'email', 'phone_num', 'full_name', 'father_name',
             'date_of_birth', 'address', 'work_address',
-            'profile_image',
+            'profile_image','is_active'
         ]
 
 
