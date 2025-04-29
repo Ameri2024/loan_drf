@@ -88,3 +88,12 @@ class BankAccountDeleteView(generics.DestroyAPIView):
 
     def get_queryset(self):
         return BankAccounts.objects.filter(user=self.request.user)
+
+
+class BankAccountDetailView(generics.RetrieveAPIView):
+    queryset = BankAccounts.objects.all()
+    serializer_class = BankAccountSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return BankAccounts.objects.filter(user=self.request.user)

@@ -10,6 +10,7 @@ urlpatterns = [
     path('transactions/update/<int:pk>', views.TransactionUpdateView.as_view(), name='transaction_update'),
     path('transactions/delete/<int:pk>', views.TransactionDeleteView.as_view(), name='transaction_delete'),
     path('bank/accounts/', views.BankAccountsView.as_view(), name='bank-accounts'),
+    path('bank/accounts/detial/<int:pk>', views.BankAccountDetailView.as_view(), name='bank_account_details'),
     path('bank/accounts/update/<int:pk>', views.BankAccountUpdateView.as_view(), name='bank_account_update'),
     path('bank/accounts/delete/<int:pk>', views.BankAccountDeleteView.as_view(), name='bank_account_delete'),
 ]
