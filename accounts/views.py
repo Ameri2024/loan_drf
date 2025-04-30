@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.utils.http import urlsafe_base64_encode
 from rest_framework import generics, status
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -23,6 +23,13 @@ class RegisterUserAPIView(generics.CreateAPIView):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+class UsersList(generics.ListAPIView):
+    serializer_class = MyUserSerializer
+    permission_classes = [IsAdminUser]
+    def get_queryset(self):
+        queryset = MyUser.objects.filter(is_active=True)
 
 
 class UserDetailsView(generics.RetrieveAPIView):
