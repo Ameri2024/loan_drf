@@ -28,8 +28,11 @@ class MyTokenObtainPairView(TokenObtainPairView):
 class UsersList(generics.ListAPIView):
     serializer_class = MyUserSerializer
     permission_classes = [IsAdminUser]
+
     def get_queryset(self):
-        queryset = MyUser.objects.filter(is_active=True)
+        queryset = MyUser.objects.all()
+        return queryset
+
 
 
 class UserDetailsView(generics.RetrieveAPIView):
