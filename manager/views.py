@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAdminUser
 from .models import SaveBalance, AdminPosts
 from loans.models import Loans, Transactions, BankAccounts
 from .serializers import SaveBalanceSerializer, AdminPostSerializer, AdminLoanSerializer, \
-    AdminTransactionSerializer, BankAccountSerializer
+    AdminTransactionSerializer, BankAccountSerializer, LoanCreateSerializer
 
 
 # === Save Balance Views ===
@@ -54,8 +54,9 @@ class LoanIndexView(generics.ListAPIView):
     permission_classes = [IsAdminUser]
 
 
-class LoansCreationView(generics.CreateAPIView):
-    serializer_class = AdminLoanSerializer
+class LoanCreateView(generics.CreateAPIView):
+    queryset = Loans.objects.all()
+    serializer_class = LoanCreateSerializer
     permission_classes = [IsAdminUser]
 
 

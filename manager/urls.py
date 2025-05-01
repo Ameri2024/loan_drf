@@ -5,7 +5,7 @@ app_name = 'manager'
 
 urlpatterns = [
     path('loan/index/', views.LoanIndexView.as_view(), name='loan_index'),
-    path('loan/create/', views.LoansCreationView.as_view(), name='loan_create'),
+    path('loan/create/', views.LoanCreateView.as_view(), name='loan_create'),
     path('loan/update/<int:pk>', views.UpdateLoanView.as_view(), name='update_loan'),
     path('loan/delete/<int:pk>', views.DeleteLoanView.as_view(), name='delete_loan'),
     path('transaction/', views.AdminTransactionView.as_view(), name='all_transaction'),

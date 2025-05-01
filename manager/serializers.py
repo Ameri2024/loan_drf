@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from loans.models import Loans, Transactions, BankAccounts
 from manager.models import SaveBalance, AdminPosts
-
+from rest_framework.validators import UniqueTogetherValidator
 
 
 class SaveBalanceSerializer(serializers.ModelSerializer):
@@ -27,17 +27,35 @@ class AdminLoanSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {
             'date_of_start': {
-                'input_formats': ['%Y-%m-%d'], # فرمت تاریخ
+                'input_formats': ['%Y-%m-%d'],
                 'format': 'YYYY-MM-DD'
             },
-            'loan_amount': {
-                'coerce_to_string': False # جلوگیری از تبدیل به رشته
-            },
-            'installment_amount': {
-                'coerce_to_string': False
-            }
+            # حذف coerce_to_string
+            'loan_amount': {'min_value': 0},
+            'installment_amount': {'min_value': 0},
+            'installment_num': {'min_value': 1},
+            'payment_num': {'min_value': 0}
         }
 
+
+class LoanCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Loans
+        fields = '__all__'
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Loans.objects.all(),
+                fields=['user', 'date_of_start'],
+                message="این کاربر قبلاً وام با این تاریخ شروع داشته است"
+            )
+        ]
+
+    def validate(self, data):
+        if data['installment_amount'] * data['installment_num'] != data['loan_amount']:
+            raise serializers.ValidationError(
+                "مبلغ قسط ضربدر تعداد اقساط باید برابر مبلغ وام باشد"
+            )
+        return data
 
 class AdminTransactionSerializer(serializers.ModelSerializer):
     user_full_name = serializers.CharField(source='user.full_name', read_only=True)
