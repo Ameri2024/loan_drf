@@ -25,6 +25,18 @@ class AdminLoanSerializer(serializers.ModelSerializer):
     class Meta:
         model = Loans
         fields = '__all__'
+        extra_kwargs = {
+            'date_of_start': {
+                'input_formats': ['%Y-%m-%d'], # فرمت تاریخ
+                'format': 'YYYY-MM-DD'
+            },
+            'loan_amount': {
+                'coerce_to_string': False # جلوگیری از تبدیل به رشته
+            },
+            'installment_amount': {
+                'coerce_to_string': False
+            }
+        }
 
 
 class AdminTransactionSerializer(serializers.ModelSerializer):

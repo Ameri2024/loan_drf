@@ -64,6 +64,17 @@ class UpdateLoanView(generics.RetrieveUpdateAPIView):
     serializer_class = AdminLoanSerializer
     permission_classes = [IsAdminUser]
 
+    def perform_update(self, serializer):
+        # تبدیل نوع وام به مقادیر معتبر
+        type_mapping = {
+            1: 'normal',
+            2: 'urgent',
+            3: 'saving'
+        }
+        validated_data = serializer.validated_data
+        validated_data['type'] = type_mapping.get(validated_data.get('type'), 'normal')
+        serializer.save()
+
 
 class DeleteLoanView(generics.DestroyAPIView):
     queryset = Loans.objects.all()
