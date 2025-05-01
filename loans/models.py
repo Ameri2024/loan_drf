@@ -4,11 +4,11 @@ from django_jalali.db import models as jalali_models
 
 
 class Loans(models.Model):
-    CHOICES = (
-        (1, 'معمولی'),
-        (2, 'اضطراری'),
-        (3, 'پس انداز')
-    )
+    TYPE_CHOICES = [
+        ('normal', 'معمولی'),
+        ('urgent', 'اضطراری'),
+        ('saving', 'پس انداز'),
+    ]
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     loan_amount = models.IntegerField()  # مبلغ وام
     date_of_start = models.DateField()
@@ -16,7 +16,7 @@ class Loans(models.Model):
     installment_num = models.SmallIntegerField()  # تعداد قسط
     payment_num = models.SmallIntegerField()  # تعداد قسط پرداختی
     guaranteeing = models.ForeignKey(MyUser, on_delete=models.DO_NOTHING, related_name='guaranteeing')
-    type = models.IntegerField(choices=CHOICES)
+    type = models.CharField(max_length=10,choices=TYPE_CHOICES,default='normal')
     is_active = models.BooleanField(default=True)
 
     class Meta:
