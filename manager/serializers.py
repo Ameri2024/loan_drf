@@ -30,12 +30,21 @@ class AdminLoanSerializer(serializers.ModelSerializer):
                 'input_formats': ['%Y-%m-%d'],
                 'format': 'YYYY-MM-DD'
             },
-            # حذف coerce_to_string
             'loan_amount': {'min_value': 0},
             'installment_amount': {'min_value': 0},
             'installment_num': {'min_value': 1},
             'payment_num': {'min_value': 0}
         }
+
+    def validate_type(self, value):
+        if isinstance(value, int):
+            return {
+                1: 'normal',
+                2: 'urgent',
+                3: 'saving'
+            }.get(value, 'normal')
+        return value
+
 
 
 class LoanCreateSerializer(serializers.ModelSerializer):
