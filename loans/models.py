@@ -16,7 +16,7 @@ class Loans(models.Model):
     installment_num = models.SmallIntegerField()  # تعداد قسط
     payment_num = models.SmallIntegerField()  # تعداد قسط پرداختی
     guaranteeing = models.ForeignKey(MyUser, on_delete=models.DO_NOTHING, related_name='guaranteeing')
-    type = models.CharField(max_length=10,choices=TYPE_CHOICES,default='normal')
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='normal')
     is_active = models.BooleanField(default=True)
 
     class Meta:
