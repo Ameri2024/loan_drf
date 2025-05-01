@@ -24,7 +24,9 @@ class LoansDetailView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # فقط وام‌های متعلق به کاربر وارد شده
+
+        if self.request.user.is_admin:
+            return Loans.objects.all()
         return Loans.objects.filter(user=self.request.user)
 
 
