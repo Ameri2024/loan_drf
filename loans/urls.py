@@ -5,7 +5,7 @@ app_name = 'loans'
 
 urlpatterns = [
     path('', views.UserLoanView.as_view(), name='user_loans'),
-    path('loan/detail/<int:pk>/', views.LoansDetailView.as_view(), name='load_details'),
+    path('loan/detail/<int:pk>', views.LoansDetailView.as_view(), name='load_details'),
     path('transactions/', views.TransactionsCreateView.as_view(), name='transaction_create'),
     path('transactions/update/<int:pk>', views.TransactionUpdateView.as_view(), name='transaction_update'),
     path('transactions/delete/<int:pk>', views.TransactionDeleteView.as_view(), name='transaction_delete'),
