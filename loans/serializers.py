@@ -7,6 +7,15 @@ class LoanSerializer(serializers.ModelSerializer):
         model = Loans
         fields = '__all__'
 
+    def get_rest_debt_amount(self, obj):
+        return obj.rest_debt_amount()
+
+    def get_rest_debt_amount(self, obj):
+        return obj.rest_debt_amount()
+
+    def get_payment_num(selfself, obj):
+        return obj.calculate_payment_num()
+
 
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:

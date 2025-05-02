@@ -32,6 +32,15 @@ class AdminLoanSerializer(serializers.ModelSerializer):
             'payment_num': {'min_value': 0}
         }
 
+    def get_rest_debt_amount(self, obj):
+        return obj.rest_debt_amount()
+
+    def get_rest_debt_amount(self, obj):
+        return obj.rest_debt_amount()
+
+    def get_payment_num(selfself, obj):
+        return obj.calculate_payment_num()
+
 
 
 
