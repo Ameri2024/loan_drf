@@ -35,7 +35,7 @@ class AdminLoanSerializer(serializers.ModelSerializer):
             'payment_num': {'min_value': 0}
         }
 
-    def get_payment_num(selfself, obj):
+    def get_calculate_payment_num(self, obj):  # ✅ نام درست متد
         return obj.calculate_payment_num()
 
     def get_payment_amount(self, obj):

@@ -11,7 +11,7 @@ class LoanSerializer(serializers.ModelSerializer):
         model = Loans
         fields = '__all__'
 
-    def get_payment_num(selfself, obj):
+    def get_calculate_payment_num(self, obj):
         return obj.calculate_payment_num()
 
     def get_payment_amount(self, obj):
