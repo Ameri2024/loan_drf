@@ -3,18 +3,22 @@ from .models import Loans, Transactions, BankAccounts
 
 
 class LoanSerializer(serializers.ModelSerializer):
+    calculate_payment_num = serializers.SerializerMethodField()
+    payment_amount = serializers.SerializerMethodField()
+    rest_debt_amount = serializers.SerializerMethodField()
+
     class Meta:
         model = Loans
         fields = '__all__'
 
-    def get_rest_debt_amount(self, obj):
-        return obj.rest_debt_amount()
-
-    def get_rest_debt_amount(self, obj):
-        return obj.rest_debt_amount()
-
     def get_payment_num(selfself, obj):
         return obj.calculate_payment_num()
+
+    def get_payment_amount(self, obj):
+        return obj.payment_amount()
+
+    def get_rest_debt_amount(self, obj):
+        return obj.rest_debt_amount()
 
 
 class TransactionSerializer(serializers.ModelSerializer):

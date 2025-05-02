@@ -21,6 +21,9 @@ class AdminPostSerializer(serializers.ModelSerializer):
 class AdminLoanSerializer(serializers.ModelSerializer):
     user_full_name = serializers.CharField(source='user.full_name', read_only=True)
     guaranteeing_full_name = serializers.CharField(source='guaranteeing.full_name', read_only=True)
+    calculate_payment_num = serializers.SerializerMethodField()
+    payment_amount = serializers.SerializerMethodField()
+    rest_debt_amount = serializers.SerializerMethodField()
 
     class Meta:
         model = Loans
@@ -32,17 +35,14 @@ class AdminLoanSerializer(serializers.ModelSerializer):
             'payment_num': {'min_value': 0}
         }
 
-    def get_rest_debt_amount(self, obj):
-        return obj.rest_debt_amount()
-
-    def get_rest_debt_amount(self, obj):
-        return obj.rest_debt_amount()
-
     def get_payment_num(selfself, obj):
         return obj.calculate_payment_num()
 
+    def get_payment_amount(self, obj):
+        return obj.payment_amount()
 
-
+    def get_rest_debt_amount(self, obj):
+        return obj.rest_debt_amount()
 
 
 class LoanCreateSerializer(serializers.ModelSerializer):
@@ -64,12 +64,14 @@ class LoanCreateSerializer(serializers.ModelSerializer):
             )
         return data
 
+
 class AdminTransactionSerializer(serializers.ModelSerializer):
     user_full_name = serializers.CharField(source='user.full_name', read_only=True)
 
     class Meta:
         model = Transactions
         fields = '__all__'
+
 
 class BankAccountSerializer(serializers.ModelSerializer):
     class Meta:
