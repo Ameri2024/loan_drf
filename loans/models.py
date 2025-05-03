@@ -53,7 +53,7 @@ class Transactions(models.Model):
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     lend = models.IntegerField()
     receipt = models.ImageField(upload_to='receipts/')
-    created = jalali_models.jDateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
     verify = models.BooleanField(default=False)
     loan = models.ForeignKey(Loans, on_delete=models.CASCADE, related_name='transactions', default=None)
 

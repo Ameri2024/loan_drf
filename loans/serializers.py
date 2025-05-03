@@ -22,6 +22,7 @@ class LoanSerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    created = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%SZ")
     user_full_name = serializers.CharField(source='user.full_name', read_only=True)
     loan_type = serializers.CharField(source='loan.type', read_only=True)
     loan_amount = serializers.IntegerField(source='loan.loan_amount', read_only=True)
