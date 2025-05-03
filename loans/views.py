@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import status, generics, permissions
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.generics import RetrieveAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.exceptions import PermissionDenied, ValidationError
+from rest_framework.generics import RetrieveAPIView, UpdateAPIView, DestroyAPIView, get_object_or_404
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -24,21 +25,58 @@ class LoansDetailView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-
         if self.request.user.is_admin:
             return Loans.objects.all()
         return Loans.objects.filter(user=self.request.user)
 
 
-class TransactionsCreateView(APIView):
-    permission_classes = [IsAuthenticated]
+class TransactionListCreateView(generics.ListCreateAPIView):
+    serializer_class = TransactionSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request):
-        serializer = TransactionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)  # ست کردن کاربر لاگین شده
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get_queryset(self):
+
+        return Transactions.objects.filter(user=self.request.user) \
+            .select_related('loan')
+
+    def perform_create(self, serializer):
+        """Auto-set user and validate loan ownership"""
+        loan = get_object_or_404(
+            Loans,
+            id=self.request.data.get('loan'),
+            user=self.request.user
+        )
+        serializer.save(user=self.request.user)
+
+    # Your existing implementation is correct, but we can add pagination
+    pagination_class = PageNumberPagination
+    page_size = 20
+
+
+class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = TransactionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ['get', 'patch', 'delete']  # Disable PUT
+
+    def get_queryset(self):
+
+        return Transactions.objects.filter(user=self.request.user) \
+            .select_related('loan')
+
+    def perform_update(self, serializer):
+        """Add custom update validation if needed"""
+        instance = self.get_object()
+        # Example: Prevent updating verified transactions
+        if instance.verify:
+            raise ValidationError("Verified transactions cannot be modified")
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        """Add custom delete validation if needed"""
+        # Example: Prevent deleting verified transactions
+        if instance.verify:
+            raise ValidationError("Verified transactions cannot be deleted")
+        instance.delete()
 
 
 class TransactionUpdateView(UpdateAPIView):
