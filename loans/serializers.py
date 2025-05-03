@@ -22,7 +22,10 @@ class LoanSerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
-    created = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%SZ")
+    # Add read_only=True here
+    created = serializers.DateTimeField(format="%Y-%m-%dT%H:%M:%SZ", read_only=True)
+
+    # Keep other fields the same...
     user_full_name = serializers.CharField(source='user.full_name', read_only=True)
     loan_type = serializers.CharField(source='loan.type', read_only=True)
     loan_amount = serializers.IntegerField(source='loan.loan_amount', read_only=True)
@@ -37,7 +40,6 @@ class TransactionSerializer(serializers.ModelSerializer):
             'id', 'user', 'user_full_name', 'lend', 'receipt', 'loan',
             'loan_type', 'loan_amount', 'verify', 'created'
         ]
-
         read_only_fields = ['user', 'verify', 'created', 'user_full_name', 'loan_type', 'loan_amount']
         extra_kwargs = {
             'lend': {'min_value': 1000}
