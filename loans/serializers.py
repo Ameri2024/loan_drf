@@ -37,6 +37,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             'id', 'user', 'user_full_name', 'lend', 'receipt', 'loan',
             'loan_type', 'loan_amount', 'verify', 'created'
         ]
+
         read_only_fields = ['user', 'verify', 'created', 'user_full_name', 'loan_type', 'loan_amount']
         extra_kwargs = {
             'lend': {'min_value': 1000}
