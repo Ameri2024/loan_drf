@@ -22,6 +22,9 @@ class LoanSerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    user_full_name = serializers.CharField(source='user.full_name', read_only=True)
+    loan_type = serializers.CharField(source='loan.type', read_only=True)
+    loan_amount = serializers.IntegerField(source='loan.loan_amount', read_only=True)
     loan = serializers.PrimaryKeyRelatedField(
         queryset=Loans.objects.all(),
         required=True
@@ -29,14 +32,16 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transactions
-        fields = ['id', 'user', 'lend', 'receipt', 'loan', 'verify']
-        read_only_fields = ['user', 'verify']
+        fields = [
+            'id', 'user', 'user_full_name', 'lend', 'receipt', 'loan',
+            'loan_type', 'loan_amount', 'verify', 'created'
+        ]
+        read_only_fields = ['user', 'verify', 'created', 'user_full_name', 'loan_type', 'loan_amount']
         extra_kwargs = {
-            'lend': {'min_value': 1000}  # Example minimum value
+            'lend': {'min_value': 1000}
         }
 
     def validate_loan(self, value):
-        """Ensure loan belongs to requesting user"""
         if value.user != self.context['request'].user:
             raise serializers.ValidationError("Invalid loan selection")
         return value
