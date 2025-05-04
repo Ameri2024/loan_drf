@@ -67,6 +67,8 @@ class LoanCreateSerializer(serializers.ModelSerializer):
 
 class AdminTransactionSerializer(serializers.ModelSerializer):
     user_full_name = serializers.CharField(source='user.full_name', read_only=True)
+    loan_type = serializers.CharField(source='loan.type', read_only=True)
+    loan_loan_amount = serializers.CharField(source='loan.loan_amount', read_only=True)
 
     class Meta:
         model = Transactions
