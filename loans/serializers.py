@@ -6,7 +6,8 @@ class LoanSerializer(serializers.ModelSerializer):
     calculate_payment_num = serializers.SerializerMethodField()
     payment_amount = serializers.SerializerMethodField()
     rest_debt_amount = serializers.SerializerMethodField()
-
+    user_full_name = serializers.CharField(source='user.full_name', read_only=True)
+    guaranteeing_full_name = serializers.CharField(source='user.full_name', read_only=True)
     class Meta:
         model = Loans
         fields = '__all__'
