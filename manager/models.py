@@ -15,7 +15,7 @@ class AdminPosts(models.Model):
     auther = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='admin_posts')
     subject = models.CharField(max_length=200)
     post = models.TextField()
-    created = jalali_models.jDateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
