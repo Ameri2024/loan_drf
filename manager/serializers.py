@@ -73,6 +73,9 @@ class AdminTransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transactions
         fields = '__all__'
+        extra_kwargs = {
+            'receipt': {'required': False}  # Make receipt optional for updates
+        }
 
 
 class BankAccountSerializer(serializers.ModelSerializer):
