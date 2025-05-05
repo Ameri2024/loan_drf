@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics
 from accounts.models import MyUser
 from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import SaveBalance, AdminPosts
 from loans.models import Loans, Transactions, BankAccounts
@@ -35,6 +37,12 @@ class AdminPostsView(generics.ListCreateAPIView):
     permission_classes = [IsAdminUser]
 
 
+class AdminPostDetailView(APIView):
+    def get(self, request, *args, **kwargs):
+        serializer = AdminPostSerializer(AdminPosts.objects.get(pk=kwargs['pk']))
+        return Response(serializer.data)
+
+
 class AdminPostUpdateView(generics.RetrieveUpdateAPIView):
     queryset = AdminPosts.objects.all()
     serializer_class = AdminPostSerializer
@@ -64,7 +72,6 @@ class UpdateLoanView(generics.RetrieveUpdateAPIView):
     queryset = Loans.objects.all()
     serializer_class = AdminLoanSerializer
     permission_classes = [IsAdminUser]
-
 
 
 class DeleteLoanView(generics.DestroyAPIView):

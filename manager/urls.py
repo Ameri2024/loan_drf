@@ -14,6 +14,7 @@ urlpatterns = [
     path('save/balance/update/<int:pk>', views.UpdateBalanceView.as_view(), name='update_balance'),
     path('save/balance/delete/<int:pk>', views.DeleteBalanceView.as_view(), name='delete_balance'),
     path('posts/', views.AdminPostsView.as_view(), name='all_posts'),
+    path('post/detail/<int:pk>', views.AdminPostDetailView.as_view(), name='post_detail'),
     path('post/update/<int:pk>', views.AdminPostUpdateView.as_view(), name='post_update'),
     path('post/delete/<int:pk>', views.AdminDeletePostView.as_view(), name='post_delete'),
     re_path('bank/accounts/(?P<national_code>[0-9]{10})', views.AdminBankAccounts.as_view(), name='admin_bank_accounts'),
