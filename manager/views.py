@@ -34,7 +34,7 @@ class DeleteBalanceView(generics.DestroyAPIView):
 class AdminPostsView(generics.ListCreateAPIView):
     queryset = AdminPosts.objects.all()
     serializer_class = AdminPostSerializer
-    permission_classes = [IsAdminUser]
+
 
 
 class AdminPostDetailView(APIView):
