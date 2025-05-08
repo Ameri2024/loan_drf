@@ -59,7 +59,8 @@ class TransactionDetailView(generics.RetrieveUpdateDestroyAPIView):
     http_method_names = ['get', 'patch', 'delete']  # Disable PUT
 
     def get_queryset(self):
-
+        if self.request.user.is_admin:
+            return Transactions.objects.all()
         return Transactions.objects.filter(user=self.request.user) \
             .select_related('loan')
 
